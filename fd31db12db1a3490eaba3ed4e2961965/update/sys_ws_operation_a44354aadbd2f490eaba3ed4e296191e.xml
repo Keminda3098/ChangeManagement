@@ -10,20 +10,19 @@
         <operation_script><![CDATA[(function process( /*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
 
     var standardChangeTemplateSysId = request.getHeader("changeTemplateId"); //Standard change template id retrieved from header
-	var standardChangeTemplate = "";
+    var standardChangeTemplate = "";
     var payload = request.body.data; // Payload object retrieved from request body  
-    
+
     var payloadJson = {};
     var changeSchema = new global.change_schemas().standard_change_create; // Schema maintained for ACM
-    var acmChangeUtil = new global.ACMChangeRequestUtils();// Script include with core functions for Automated CR Creation
-	var acmChangeValidations = new global.ACMChangeRequestValidations();// Script include with validation functions for Automated CR Creation
-	
+    var acmChangeUtil = new global.ACMChangeRequestUtils(); // Script include with core functions for Automated CR Creation
+    var acmChangeValidations = new global.ACMChangeRequestValidations(); // Script include with validation functions for Automated CR Creation
+
     var release_id = payload['releaseId']; // Release id of a jira release
 
-	
-	var error = new sn_ws_err.ServiceError();
+    var error = new sn_ws_err.ServiceError();
     var defaultLogStart = "ACM CHANGE CREATE API : ";
-	var method = "create";
+    var method = "create";
     var auth = request.getHeader("Authorization");
     var authUser = GlideStringUtil.base64Decode(auth.replace("Basic ", "")).split(":")[0];
 
@@ -31,13 +30,12 @@
     acmChangeValidations.standardChangeTemplateValidation(standardChangeTemplateSysId); //Template validation
     acmChangeValidations.intialValidations(method, payload, changeSchema); //Initial Validations
 
-	
-    if (standardChangeTemplateSysId !=null) {
+    if (standardChangeTemplateSysId != null) {
         payload["changeTemplateId"] = standardChangeTemplateSysId;
-		standardChangeTemplate = global.StandardChangeTemplate.findById(standardChangeTemplateSysId);
+        standardChangeTemplate = global.StandardChangeTemplate.findById(standardChangeTemplateSysId);
     }
 
-    payloadJson =  new global.ACMChangeRequestUtils().mapToColumns(payload, changeSchema);
+    payloadJson = new global.ACMChangeRequestUtils().mapToColumns(payload, changeSchema);
     payloadJson["state"] = "Scheduled";
 
     var nameValuePairs = global.ChangeCommon.assign({}, request.queryParams, payloadJson);
@@ -74,7 +72,6 @@
         };
 
         return result;
-
     }
 })(request, response);]]></operation_script>
         <operation_uri>/api/x_jws_scoped_chang/automated_change_creation</operation_uri>
@@ -91,15 +88,15 @@
         <sys_created_on>2021-09-02 15:42:29</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>a44354aadbd2f490eaba3ed4e296191e</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>Create</sys_name>
         <sys_package display_value="Scoped Change Management" source="x_jws_scoped_chang">fd31db12db1a3490eaba3ed4e2961965</sys_package>
-        <sys_policy/>
+        <sys_policy>read</sys_policy>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Scoped Change Management">fd31db12db1a3490eaba3ed4e2961965</sys_scope>
         <sys_update_name>sys_ws_operation_a44354aadbd2f490eaba3ed4e296191e</sys_update_name>
-        <sys_updated_by>nhapuarach</sys_updated_by>
-        <sys_updated_on>2021-09-02 18:15:14</sys_updated_on>
+        <sys_updated_by>ksamarawee</sys_updated_by>
+        <sys_updated_on>2021-09-03 04:44:34</sys_updated_on>
         <web_service_definition display_value="Automated Change Creation">13229f56db1e3490eaba3ed4e29619da</web_service_definition>
         <web_service_version/>
     </sys_ws_operation>
